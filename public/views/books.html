@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width">
+    	<title>repl.it</title>
+    	<link href="/styles/general.css" rel="stylesheet" type="text/css" />
+    	<link href="/styles/header.css" rel="stylesheet" type="text/css" />
+    	<link href="/styles/cards.css" rel="stylesheet" type="text/css" />
+    	<link href="/styles/footer.css" rel="stylesheet" type="text/css" />
+  	</head>
+  	<body>
+		<header class = "header"><h1>My Stories</h1><div class = "half-scroll" data-src = "https://static01.nyt.com/images/2019/12/17/books/review/17fatbooks/17fatbooks-superJumbo.jpg"></div></header>
+		<h2 class = "section-title">Short Stories</h2>
+		<section class = "book-cards" id = "book-cards"></section>
+		<h2 class = "section-title">Five Minute Writes</h2>
+		<section class = "writings-cards">
+			<div id = "list"></div>
+			<div id = "recently">
+				<h3>Most recent</h3>
+			</div>
+		</section>
+		<footer class = "footer"></footer>
+    	<script src="/scripts/scroll.js"></script>
+    	<script src="/scripts/footer.js"></script>
+    	<script src="/api/stories-script"></script>
+  	</body>
+</html>

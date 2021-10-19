@@ -1,0 +1,26 @@
+{
+    "stranothus@icloud.com": {
+        "name": "Declan Gibson",
+        "email": "stranothus@icloud.com",
+        "passwordKey": "developer_pass",
+        "permissions": "admin",
+        "password": "",
+        "onmailList": true
+    },
+    "stranothus@gmail.com": {
+        "name": "Test User",
+        "email": "stranothus@gmail.com",
+        "passwordKey": "test_user",
+        "permissions": "user",
+        "password": "",
+        "onmailList": true
+    },
+    "bob@bobtest.com": {
+        "name": "Bob",
+        "email": "bob@bobtest.com",
+        "passwordKey": "normal_user_passwordThuJul012021183236GMT0000CoordinatedUniversalTime",
+        "permissions": "user",
+        "password": "",
+        "onmailList": false
+    }
+}

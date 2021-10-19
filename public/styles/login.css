@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Roboto:wght@400&display=swap');
+
+
+* {
+	margin : 0;
+	padding : 0;
+}
+
+
+body {
+	background-color : #EFEFEF;
+	min-height : 100vh;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+}
+
+
+#login {
+	padding : 25px 50px;
+	width : 300px;
+	height : auto;
+	background-color : #FFFFFF;
+	box-shadow : 2px 3px 5px 2px #303030C0;
+	display : flex;
+	flex-direction : column;
+}
+#login h1 {
+	margin : 15px 0 25px;
+	padding : 0;
+	width : 100%;
+	height : auto;
+	text-align : center;
+	font-family: 'Fira Sans', sans-serif;
+	font-size : 2rem;
+	font-weight : 500;
+}
+#login input {
+	margin : 15px 0;
+	padding : 0 15px;
+	height : 35px;
+	width : calc(100% - 40px);
+	font-family: 'Poppins', sans-serif;
+	font-size : 1rem;
+	background-color : #FFFFFF;
+	border : 1px solid #707070;
+	border-radius : 3px;
+}
+#login input[type=submit] {
+	margin : 35px 0 15px 50%;
+	padding : 0;
+	width : 50%;
+	cursor : pointer;
+	font-family: 'Roboto', sans-serif;
+	font-size : 1.1rem;	
+	font-weight : 300;
+	background-color : #FFFFFF;
+	border : 1px solid #707070;
+	border-radius : 3px;
+}
+#login input[type=submit]:active {
+	border-color : #138DFE;
+	outline : none;
+	background-color : #038DFE10;
+}
+#login #alternative {
+	margin : 10px 5%;
+	padding : 0;
+	width : 90%;
+	display : flex;
+	flex-direction : column;
+}
+#login #alternative span {
+	margin : 5px 0;
+	font-family: 'Roboto', sans-serif;
+	font-size : 0.85rem;
+	font-weight : 400;
+}
+#login #alternative span a {
+	color : #136DFE;
+}

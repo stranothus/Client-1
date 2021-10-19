@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Poppins:wght@400&display=swap');
+
+
+.page-links {
+	display : flex;
+	width : 750px;
+	margin : 150px calc((100vw - 750px) / 2);
+	flex-direction : row;
+	justify-content : space-between;
+	align-items : center;
+}
+
+
+@keyframes link-hover {
+	from {
+		box-shadow : 0px 0px 3px #30303000;
+	}
+	to {
+		box-shadow : 2px 3px 3px #303030A0;
+	}
+}
+@keyframes link-hover-after {
+	from {
+		background-color : #30303000;
+	}
+	to {
+		background-color : #30303020;
+	}
+}
+@keyframes link-unhover {
+	from {
+		box-shadow : 2px 3px 3px #303030A0;
+	}
+	to {
+		box-shadow : 0px 0px 3px #30303000;
+	}
+}
+@keyframes link-unhover-after {
+	from {
+		background-color : #30303020;
+	}
+	to {
+		background-color : #30303000;
+	}
+}
+
+
+.page-links .page-link {
+	width : 200px;
+	height : 275px;
+	cursor : pointer;
+	border-radius : 5px;
+	filter : grayscale(25%) brightness(110%);
+	position : relative;
+	overflow : hidden;
+	box-shadow : 2px 3px 3px #30303000;
+	animation : 0.2s link-unhover ease-in-out forwards;
+}
+.page-links .page-link:hover {
+	animation : 0.2s link-hover ease-in-out forwards;
+}
+.page-links .page-link:after {
+	content : "";
+	width : 100%;
+	height : 100%;
+	top : 0;
+	left : 0;
+	background-color : #30303000;
+	position : absolute;
+	animation : 0.2s link-unhover-after ease-in-out forwards;
+}
+.page-links .page-link:hover:after {
+	animation : 0.2s link-hover-after ease-in-out forwards;
+}
+
+
+@keyframes exist {
+	from {
+		opacity : 0;
+		padding : 20px 15px 0px;
+	}
+	to {
+		opacity : 1;
+		padding-top : 10px 15px 10px;
+	}
+}
+
+
+.page-links .page-link p {
+	font-family: 'Poppins', sans-serif;
+	font-weight : 300;
+	font-size : 1.3rem;
+	line-height : 1.7;
+	position : absolute;
+	top : 0;
+	padding : 10px 15px;
+	display : block;
+	width : 170px;
+	color : #EFEFEF;
+	text-align : center;
+	z-index : 10;
+	background-color : #303030A0;
+	animation : 0.5s exist ease-in-out forwards;
+}
+
+
+.books-and-stories {
+	display : flex;
+	width : calc(100vw - 50vw);
+	margin : 50px 25vw;
+	flex-direction : column;
+	justify-content : space-between;
+	align-items : center;
+}
+.books-and-stories .book-or-story {
+	width : 100%;
+	height : 200px;
+	cursor : pointer;
+	transition : 0.2s all ease-in-out;
+	position : relative;
+	overflow : hidden;
+	background-color : #FAFAFA;
+	margin : 15px 0;
+}
+.books-and-stories .book-or-story img {
+	filter : grayscale(50%) brightness(110%);
+	margin : 10px;
+	width : 110px;
+	float : left;
+}
+.books-and-stories .book-or-story p {
+	margin : 10px 20px 20px 10px;
+	font-size : 0.9rem;
+}
+.books-and-stories .book-or-story:hover {
+	background-color : #FFFFFF;
+	box-shadow : 2px 3px 3px #30303050;
+	transition : 0.2s all ease-in-out;
+}
+
+.book-cards {
+	margin : 25px 10vw -25px;
+	display : flex;
+	flex-direction : row;
+	flex-wrap : wrap;
+}
+.book-card {
+	width : 40%;
+	margin : 50px 5%;
+	background-color : #FFFFFF;
+	border-radius : 8px;
+	overflow : hidden;
+	position : relative;
+	cursor : pointer;
+	height : 275px;
+	box-shadow : 4px 2px 10px #303030A0;
+	transition : 0.3s all;
+}
+.book-card:after {
+	content : "";
+	position : absolute;
+	top : 0;
+	left : 0;
+	width : 100%;
+	height : 100%;
+	box-shadow : 0 0 50px inset #30303020;
+	transition : 0.3s all;
+}
+.book-card:hover {
+	transition : 0.3s all;
+	box-shadow : 8px 4px 10px #303030D0;
+}
+.book-card:hover:after {
+	transition : 0.3s all;
+	box-shadow : 0 0 0 inset #50505010;
+}
+.book-card img {
+	width : 100%;
+	object-fit : cover;
+}
+.book-card .title {
+	position : absolute;
+	background-color : #6FDFFF;
+	border-radius : 15px 0 0 15px;
+	font-family : "Poppins", sans-serif;
+	font-weight : 300;
+	font-size : 1.2rem;
+	padding : 0 50px;
+	right : 0;
+	top : 155px;
+}
+.book-card .preview {
+	position : absolute;
+	padding : 10px 20px;
+	width : calc(100% - 40px);
+	font-family : "Poppins", sans-serif;
+	font-size : 1.1rem;
+	line-height : 1.6;
+	font-weight : 300;
+	bottom : 0;
+	color : #000000;
+	background-color : #FFFFFF;
+}
+
+
+.create-story {
+	min-height : 250px;
+	background-color : #909090;
+	box-shadow : 6px 3px 10px #303030D0;
+	display: flex;
+	flex-direction : row;
+	justify-content : center;
+	align-items : center;
+	cursor : default;
+}
+.create-story:after {
+	display : none;
+}
+.create-story a {
+	font-size: 5rem;
+	line-height : 1;
+	padding : 20px;
+	color : #303030;
+	text-decoration : none;
+	transition : 0.3s all;
+}
+.create-story a:hover {
+	text-shadow : 3px 3px 5px #202020A0;
+	transition : 0.3s all;
+}
+
+
+.section-title {
+	font-family : "Poppins", sans-serif;
+	font-size : 1.75rem;
+	font-weight : 400;
+	margin : 50px 20vw 0;
+}
+
+
+.writings-cards {
+	display : flex;
+	flex-direction: row;
+	justify-content : center;
+}
+.writings-cards #recently {
+	display : flex;
+	flex-direction : column;
+	margin : 50px 0 50px 4vw;
+	width : 250px;
+}
+.writings-cards #recently h3 {
+	font-family : "Poppins", sans-serif;
+	font-size : 1.5rem;
+	font-weight : 400;
+	position : relative;
+}
+.writings-cards #recently h3:before {
+	content : "";
+	width : 10px;
+	height : 10px;
+	border-radius: 50%;
+	position : absolute;
+	left : -20px;
+	top : 13px;
+	background-color : #4090F0;
+}
+.writings-cards #recently .recent-writing-card {
+	width : 90%;
+	height : 250px;
+	padding : 15px 5%;
+	margin: 25px 0;
+	border-radius : 5px;
+	overflow : hidden;
+	display : flex;
+	flex-direction : column;
+	background-color : #FFFFFF;
+	cursor : pointer;
+	box-shadow : 4px 2px 5px #303030A0, 0 0 10px inset #EFEFEF;
+	transition : 0.3s all;
+	position : relative;
+}
+.writings-cards #recently .recent-writing-card:hover {
+	box-shadow : 8px 4px 5px #303030A0, 0 0 0 inset #E0E0E0;
+	transition : 0.3s all;
+}
+.writings-cards #recently .recent-writing-card img {
+	width : 112.2%;
+	margin : -15px -5.6% 0;
+	padding : 0;
+	background-color : #AFAFAF;
+	border-radius : 5px 5px 0;
+}
+.writings-cards #recently .recent-writing-card h4 {
+	font-family : "Poppins", sans-serif;
+	font-size : 1.25rem;
+	font-weight : 400;
+	line-height : 2;
+	width : 100%;
+	margin : 0 -5%;
+	text-align : center;
+	position : absolute;
+	bottom : 75px;
+	z-index : 100;
+	background-color : #E0E0E0;
+}
+.writings-cards #recently .recent-writing-card p {
+	font-family : "Poppins", sans-serif;
+	font-size : 1rem;
+	font-weight : 300;
+	line-height : 1.4;
+	width : 90%;
+	margin : 5px -5%;
+	padding : 5px 5%;
+	position : absolute;
+	bottom : -5px;
+	height : 65px;
+	z-index : 100;
+	background-color : #FFFFFF;
+}
+.writings-cards #list {
+	display : flex;
+	flex-direction : column-reverse;
+	margin : 50px 4vw 50px 0;
+	width : calc(60vw - 200px);
+}
+.writings-cards #list .writing-card {
+	width : 90%;
+	height : 150px;
+	padding : 15px 5%;
+	margin : 25px 0;
+	border-radius : 5px;
+	overflow : hidden;
+	display : flex;
+	flex-direction : row;
+	align-items : flex-start;
+	background-color : #FFFFFF;
+	cursor : pointer;
+	box-shadow : 4px 2px 5px #303030A0, 0 0 10px inset #EFEFEF;
+	text-decoration : none;
+	color : #000000;
+	transition : 0.3s all;
+}
+.writings-cards #list .writing-card:hover {
+	box-shadow : 8px 4px 5px #303030A0, 0 0 0 inset #E0E0E0;
+	transition : 0.3s all;
+}
+.writings-cards #list .writing-card img {
+	width : 180px;
+	margin : -15px 10px -15px -5.6%;
+	background-color : #AFAFAF;
+}
+.writings-cards #list .writing-card #preview h4 {
+	font-family : "Poppins", sans-serif;
+	font-size : 1.35rem;
+	font-weight : 400;
+	line-height : 2;
+}
+.writings-cards #list .writing-card #preview p {
+	font-family : "Poppins", sans-serif;
+	font-size : 1rem;
+	font-weight : 300;
+	line-height : 1.4;
+}
+
+
+.writings-cards #list .writing-card.create-write {
+	min-height : 180px;
+	background-color : #909090;
+	box-shadow : 6px 3px 10px #303030D0;
+	display: flex;
+	flex-direction : row;
+	justify-content : center;
+	align-items : center;
+	cursor : default;
+}
+.writings-cards #list .writing-card.create-write:after {
+	display : none;
+}
+.writings-cards #list .writing-card.create-write a {
+	font-size: 5rem;
+	line-height : 1;
+	padding : 20px;
+	color : #303030;
+	text-decoration : none;
+	transition : 0.3s all;
+}
+.writings-cards #list .writing-card.create-write a:hover {
+	text-shadow : 3px 3px 5px #202020A0;
+	transition : 0.3s all;
+}

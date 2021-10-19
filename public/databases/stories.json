@@ -1,0 +1,28 @@
+[
+    {
+        "image": "/images/IMG_7685.jpg",
+        "title": "Forum Test",
+        "preview": "To use to test story forums",
+        "content": "To use to test story forums",
+        "replies": [
+            {
+                "name": "Declan Gibson",
+                "email": "stranothus@icloud.com",
+                "content": "Testtttt",
+                "date": "Wed Jul 14 2021 22:07:35 GMT+0000 (Coordinated Universal Time)"
+            },
+            {
+                "name": "Declan Gibson",
+                "email": "stranothus@icloud.com",
+                "content": "Testing, 1, 2, 3!!!",
+                "date": "Wed Jul 14 2021 22:07:51 GMT+0000 (Coordinated Universal Time)"
+            },
+            {
+                "name": "Declan Gibson",
+                "email": "stranothus@icloud.com",
+                "content": "Testing, 1, 2, 3!!!",
+                "date": "Wed Jul 14 2021 22:08:23 GMT+0000 (Coordinated Universal Time)"
+            }
+        ]
+    }
+]

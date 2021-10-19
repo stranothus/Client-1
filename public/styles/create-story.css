@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
+
+* {
+	margin : 0;
+	padding : 0;
+}
+
+
+#title:after {
+	animation : none;
+}
+
+
+#title input {
+	border : none;
+	outline : none;
+	font-size : 2rem;
+	font-family : "Poppins", sans-serif;
+	font-weight : 400;
+	text-align : center;
+	width : 100vw;
+	margin : 0 0 0 calc(-50vw + 50%);
+}
+#title input:autofill {
+	font-size : 2rem;
+	font-family : "Poppins", sans-serif;
+	font-weight : 400;
+}
+#title input:-webkit-autofill {
+	font-size : 2rem;
+	font-family : "Poppins", sans-serif;
+	font-weight : 400;
+}
+
+
+.half-scroll {
+	display : flex;
+	flex-direction : row;
+	justify-content : center;
+	align-items : center;
+	overflow : hidden;
+}
+.half-scroll #story-image {
+	width : 0.01px;
+}
+.half-scroll #select-image {
+	font-size : 5rem;
+	color : #303030;
+	cursor : pointer;
+	font-family : "Poppins", sans-serif;
+	font-weight : 400;
+	line-height : 0;
+	padding : 100%;
+	background : #AFAFAF;
+}
+
+
+.form-body textarea {
+	width : calc(80vw - 4px); 
+	padding : 15px 2%;
+	margin : 50px 10vw;
+	border : 2px solid #909090;
+	border-radius : 5px;
+	background-color : #FFFFFF;
+	resize : vertical;
+	font-size : 1.2rem;
+	font-family : 'Poppins', sans-serif;
+	position : relative;
+	height : 400px;
+}
+
+
+.form-body button,.form-body input[type=submit] {
+	font-size : 1rem;
+	font-family : 'Poppins', sans-serif;
+	margin : 50px 150px;
+	padding : 5px 10px;
+	border : 1px solid #909090;
+	border-radius : 5px;
+	display : block;
+	position : relative;
+	right : calc(300px - 100vw);
+	cursor : pointer;
+	background-color : #FAFAFA;
+}
+
+
+.forum {
+	position : relative;
+	margin : 50px 10vw;
+	padding : 50px 10vw;
+	width : 60vw;
+}
+.forum .reply-form {
+	width : 96%;
+	padding : 15px 2%;
+	margin : 50px 0 100px;
+	resize : vertical;
+	font-size : 1.2rem;
+	font-family : 'Poppins', sans-serif;
+	position : relative;
+}
+.forum .reply-form * {
+	clear : both;
+}
+.forum .reply-form textarea {
+	height : 100px;
+	width : 96%;
+	font-size : 1rem;
+	font-family : 'Poppins', sans-serif;
+	margin : 5px 15px;
+	padding : 5px 10px;
+	resize : vertical;
+	border : 1px solid #909090;
+	border-radius : 5px;
+	white-space : pre-wrap;
+}
+.forum .reply-form .submit-post {
+	position : absolute;
+	top : 5px;
+	right : 5px;
+}
+.forum .reply {
+	border-bottom : 2px solid #909090;
+}
+.forum .reply {
+	width : calc(100% - 30px);
+	margin : 30px 15px;
+}
+.forum .reply h2 {
+	font-family : 'Poppins', sans-serif;
+	font-size : 1.3rem;
+}
+.forum .reply h4 {
+	font-family : 'Poppins', sans-serif;
+	font-size : 0.9rem;
+}
+.forum .reply div {
+	font-size : 1.2rem;
+	font-family : 'Poppins', sans-serif;
+	margin : 10px 15px;
+	border-bottom : none;
+}
+.forum .reply input {
+	font-size : 1rem;
+	font-family : 'Poppins', sans-serif;
+	margin : 5px 15px;
+	padding : 5px 10px;
+	width : 25%;
+	border : 1px solid #909090;
+	border-radius : 5px;
+	display : block;
+}
+.forum .reply textarea {
+	font-size : 1rem;
+	font-family : 'Poppins', sans-serif;
+	margin : 5px 15px;
+	padding : 5px 10px;
+	resize : vertical;
+	width : 75%;
+	border : 1px solid #909090;
+	border-radius : 5px;
+	white-space : pre-wrap;
+}
+.forum button {
+	font-size : 1rem;
+	font-family : 'Poppins', sans-serif;
+	margin : 5px 15px;
+	padding : 5px 10px;
+	border : 1px solid #909090;
+	border-radius : 5px;
+	display : block;
+	float : right;
+	cursor : pointer;
+	background-color : #FAFAFA;
+}
+.forum button:hover {
+	background-color : #EFEFEF;
+}
+.forum .submit-reply {
+	border-bottom : none;
+}

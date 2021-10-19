@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width">
+    	<title>Create Quick Write</title>
+    	<link href="/styles/create-story.css" rel="stylesheet" type="text/css" />
+    	<link href="/styles/header.css" rel="stylesheet" type="text/css" />
+    	<link href="/styles/footer.css" rel="stylesheet" type="text/css" />
+  	</head>
+  	<body>
+		<form action = "/api/create-write" enctype = "multipart/form-data" method = "POST" class = "form-body">
+			<header class = "header">
+				<h1 id = "title"><input type = "text" name = "title" placeholder = "title"></h1>
+				<div class = "half-scroll" data-src = "" style = "filter : brightness(90%);">
+					<input id = "story-image" type = "file" name = "file">
+					<label for = "story-image" id = "select-image">+</label>
+				</div>
+			</header>
+			<textarea class = "content" id = "content" name = "write"></textarea>
+			<button>Submit</button>
+		</form>
+		<footer class = "footer"></footer>
+    	<script src="/scripts/footer.js"></script>
+    	<script src="/scripts/scroll.js"></script>
+    	<script src="/scripts/create-story.js"></script>
+  	</body>
+</html>
