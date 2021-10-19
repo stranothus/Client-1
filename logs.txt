@@ -3,3 +3,117 @@
 Tue Oct 19 2021 12:14:00 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
 
 Tue Oct 19 2021 12:47:08 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:48:41 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:49:26 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:54:14 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 13:54:56 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:55:38 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:56:14 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:56:18 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 13:56:28 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 13:57:27 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 13:57:58 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 13:59:21 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 13:59:25 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 14:01:23 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:01:28 GMT-0500 (Central Daylight Time) - [POST] Malformed account creation attempt
+
+Tue Oct 19 2021 14:02:29 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:06:24 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:08:14 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:09:52 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:10:25 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:10:52 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:11:44 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:12:08 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:15:30 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:16:10 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:16:13 GMT-0500 (Central Daylight Time) - [POST] New account created for stranothus@gmail.com
+
+Tue Oct 19 2021 14:16:36 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:16:38 GMT-0500 (Central Daylight Time) - [POST] Confirmation email sent
+
+Tue Oct 19 2021 14:17:36 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:17:38 GMT-0500 (Central Daylight Time) - [POST] Malformed account confirmation
+
+Tue Oct 19 2021 14:17:44 GMT-0500 (Central Daylight Time) - [POST] Malformed account confirmation
+
+Tue Oct 19 2021 14:19:03 GMT-0500 (Central Daylight Time) - [POST] Malformed account confirmation
+
+Tue Oct 19 2021 14:20:36 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:20:43 GMT-0500 (Central Daylight Time) - [POST] Malformed account confirmation
+
+Tue Oct 19 2021 14:21:42 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:21:48 GMT-0500 (Central Daylight Time) - [POST] Account confirmed stranothus@gmail.com
+
+Tue Oct 19 2021 14:22:11 GMT-0500 (Central Daylight Time) - [N/A] Cookies cleared
+
+Tue Oct 19 2021 14:22:19 GMT-0500 (Central Daylight Time) - [POST] Successful login to stranothus@icloud.com with pasword P4ssW0rd
+
+Tue Oct 19 2021 14:22:30 GMT-0500 (Central Daylight Time) - [N/A] Cookies cleared
+
+Tue Oct 19 2021 14:22:38 GMT-0500 (Central Daylight Time) - [POST] Successful login to stranothus@gmail.com with pasword P4ssW0rd
+
+Tue Oct 19 2021 14:27:35 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:27:51 GMT-0500 (Central Daylight Time) - [POST] Blog post reply created
+
+Tue Oct 19 2021 14:28:00 GMT-0500 (Central Daylight Time) - [PUT] Blog post reply edited
+
+Tue Oct 19 2021 14:28:03 GMT-0500 (Central Daylight Time) - [DELETE] Blog post reply deleted
+
+Tue Oct 19 2021 14:51:43 GMT-0500 (Central Daylight Time) - [N/A] Server restarted
+
+Tue Oct 19 2021 14:51:51 GMT-0500 (Central Daylight Time) - [N/A] Cookies cleared
+
+Tue Oct 19 2021 14:51:58 GMT-0500 (Central Daylight Time) - [POST] Successful login to stranothus@gmail.com with pasword Sn0w Wh1te
+
+Tue Oct 19 2021 14:52:11 GMT-0500 (Central Daylight Time) - [N/A] Cookies cleared
+
+Tue Oct 19 2021 14:52:16 GMT-0500 (Central Daylight Time) - [POST] Successful login to stranothus@gmail.com with pasword P4ssW0rd
+
+Tue Oct 19 2021 14:52:48 GMT-0500 (Central Daylight Time) - [N/A] Cookies cleared
+
+Tue Oct 19 2021 14:52:55 GMT-0500 (Central Daylight Time) - [POST] Successful login to stranothus@gmail.com with pasword P4ssW0rd
+
+Tue Oct 19 2021 14:53:18 GMT-0500 (Central Daylight Time) - [POST] New blog post created
+
+Tue Oct 19 2021 14:54:40 GMT-0500 (Central Daylight Time) - [PUT] Blog post edited
+
+Tue Oct 19 2021 14:54:56 GMT-0500 (Central Daylight Time) - [PUT] Blog post edited
+
+Tue Oct 19 2021 14:56:28 GMT-0500 (Central Daylight Time) - [PUT] Blog post edited
+
+Tue Oct 19 2021 14:57:06 GMT-0500 (Central Daylight Time) - [PUT] Blog post edited
+
+Tue Oct 19 2021 14:57:14 GMT-0500 (Central Daylight Time) - [DELETE] Blog post deleted
+
+Tue Oct 19 2021 14:57:40 GMT-0500 (Central Daylight Time) - [DELETE] Blog post deleted

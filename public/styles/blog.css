@@ -70,7 +70,6 @@
 	background-color : #FFFFFF;
 	position : relative;
 	overflow-y : hidden;
-	white-space : pre-wrap;
 }
 .blog-posts .post .expand {
 	position : absolute;
@@ -104,6 +103,7 @@
 	font-family : 'Poppins', sans-serif;
 	margin : 10px 15px;
 	padding : 0 0 15px;
+	white-space : pre-wrap;
 }
 .blog-posts .post .reply {
 	width : 75%;

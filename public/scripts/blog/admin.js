@@ -1,25 +1,59 @@
+/**
+ * Creates an instance of HTMLElement based off a string in HTML format
+ * 
+ * @param node {string} - node model
+ * 
+ * @returns {void}
+ */
+ function $create(node) {
+	node = node.trim();
+	let startingTag = node.match(/<(?:[^>\s]+)/)[0];
+	startingTag = startingTag.slice(1, startingTag.length);
+
+
+	let attributes = 
+		node.slice(startingTag.length + 1, startingTag.length + 2) !== ">"
+		?
+		(node.slice(startingTag.length + 1).match(/([^>]+)/)[0]).replace(/\s/g, "").replace(/\([\"\']/g, "(#$#").replace(/[\"\']\)/g, "#$#)").replace(/\\[\"\']/g, "#$#").split(/[\"\'](?!url\()|=[\"\']/g)
+		:
+		"";
+
+
+	let HTML = node.match(/>([^]*)</)[0];
+	HTML = HTML.slice(1, HTML.length - 1);
+
+
+	let element = document.createElement(startingTag);
+
+	for(let i = 0; i < attributes.length - 1; i+=2) {
+		element.setAttribute(attributes[i], attributes[i + 1].replace(/#\$#/g, "\'").replace(/%20/g, " "));
+	}
+
+	element.innerHTML = HTML;
+
+	return element;
+}
+
 function setup() {
 	fetch("/api/blog-posts")
 	.then(response => response.json())
 	.then(data => {
-		var blogNav = document.getElementsByClassName("blog-nav")[0];
-		var blogPosts = document.getElementsByClassName("blog-posts")[0];
+		let blogNav = document.getElementsByClassName("blog-nav")[0];
+		let blogPosts = document.getElementsByClassName("blog-posts")[0];
 
 		blogNav.innerHTML = "";
 		blogPosts.innerHTML = "";
 
-		var topics = {};
+		let topics = {};
 
 
-		for(var i = 0; i < data.length; i++) {
-			var index = data[i];
+		for(let i = 0; i < data.length; i++) {
+			let index = data[i];
 
 
 			//{ create blog post cont
 
-				var postElement = document.createElement("div");
-
-				postElement.classList.add("post");
+				let postElement = $create(`<div class = "post"></div>`);
 
 				blogPosts.prepend(postElement);
 
@@ -28,106 +62,40 @@ function setup() {
 
 			//{ create blog post edit
 
-				var postEditButton = document.createElement("button");
-
-				postEditButton.textContent = "Edit";
-
-				postEditButton.dataset.index = i;
+				let postEditButton = $create(`<button data-index = "${i}" >Edit</button>`);
 				postEditButton.dataset.created = index.created;
 
 				postEditButton.addEventListener("click", function() {
-					var d = this.dataset;
+					let d = this.dataset;
+					console.log(d);
 
-					var post = document.getElementsByClassName("post")[document.getElementsByClassName("post").length - 1 - d.index];
+					let post = document.getElementsByClassName("post")[document.getElementsByClassName("post").length - 1 - d.index];
 
 
 					//{ create post edit form
 
-						var postEditForm = document.createElement("form");
-
-						postEditForm.setAttribute("method", "POST");
-						postEditForm.setAttribute("action", "/blog");
-
-						postEditForm.classList.add("post");
-
-					//}
-
-
-					//{ create post edit submit
-
-						var postEditTitle = document.createElement("button");
-						
-						postEditTitle.textContent = "Save";
-
-						postEditForm.appendChild(postEditTitle);
-
-					//}
-
-
-					//{ create post edit hidden postId
-
-						var postEditPostId = document.createElement("input");
-						
-						postEditPostId.type = "hidden";
-						postEditPostId.name = "created";
-						postEditPostId.value = d.created;
-
-						postEditForm.appendChild(postEditPostId);
-
-					//}
-
-
-					//{ create post edit hidden target
-
-						var postEditTarget = document.createElement("input");
-						
-						postEditTarget.type = "hidden";
-						postEditTarget.name = "target";
-						postEditTarget.value = "edit-post";
-
-						postEditForm.appendChild(postEditTarget);
-
-					//}
-
-
-					//{ create post edit title
-
-						var postEditTitle = document.createElement("input");
-						
-						postEditTitle.type = "text";
-						postEditTitle.name = "title";
-						postEditTitle.value = post.getElementsByTagName("h2")[0].textContent;
-
-						postEditForm.appendChild(postEditTitle);
-
-					//}
-
-
-					//{ create post edit topics
-
-						var postEditTopics = document.createElement("input");
-						
-						postEditTopics.type = "text";
-						postEditTopics.name = "topics";
-						postEditTopics.value = data[d.index].topics;
-
-						postEditForm.appendChild(postEditTopics);
+						let postEditForm = $create(`<form method = "POST" action = "/blog" enctype = "multipart/form-data" class = "post">
+							<button>Save</button>
+							<input type = "hidden" name = "created" value = "${d.created}">
+							<input type = "hidden" name = "target" value = "edit-post">
+							<input type = "text" name = "title" value = "${post.getElementsByTagName("h2")[0].textContent}">
+							<input type = "text" name = "topics" value = "${data[d.index].topics}">
+						</form>`);
 
 					//}
 
 
 					//{ create post edit content
 
-						var postEditContent = document.createElement("textarea");
-						
-						postEditContent.name = "content";
+						let postEditContent = $create(`<textarea name = "content"></textarea>`);
+
 						postEditContent.value = post.getElementsByTagName("div")[0].textContent;
 
 						postEditContent.addEventListener("keydown", function(e) {
 							if(e.keyCode === 9) {
 								e.preventDefault();
-								var start = this.selectionStart;
-								var end = this.selectionEnd;
+								let start = this.selectionStart;
+								let end = this.selectionEnd;
 
 								// set textarea value to: text before caret + tab + text after caret
 								this.value = this.value.substring(0, start) +
@@ -154,14 +122,11 @@ function setup() {
 
 			//{ create blog post delete
 
-				var postDeleteButton = document.createElement("button");
-
-				postDeleteButton.textContent = "Delete";
-
+				let postDeleteButton = $create(`<button>Delete</button>`);
 				postDeleteButton.dataset.created = index.created;
 
 				postDeleteButton.addEventListener("click", function() {
-					var d = this.dataset;
+					let d = this.dataset;
 
 					fetch("/blog", {
 						method : "POST",
@@ -188,9 +153,7 @@ function setup() {
 
 			//{ create blog post title
 
-				var titleElement = document.createElement("h2");
-
-				titleElement.textContent = index.title;
+				let titleElement = $create(`<h2>${index.title}</h2>`);
 
 				postElement.appendChild(titleElement);
 
@@ -199,9 +162,7 @@ function setup() {
 
 			//{ create blog post date
 
-				var dateElement = document.createElement("h4");
-
-				dateElement.textContent = index.created;
+				let dateElement = $create(`<h4>${index.created}</h4>`)
 
 				postElement.appendChild(dateElement);
 
@@ -210,11 +171,7 @@ function setup() {
 
 			//{ create blog post content
 
-				var contentElement = document.createElement("div");
-
-				contentElement.textContent = index.content;
-
-				contentElement.classList.add("post-content");
+				let contentElement = $create(`<div class = "post-content">${index.content}</div>`);
 
 				postElement.appendChild(contentElement);
 
@@ -223,15 +180,13 @@ function setup() {
 
 			//{ create blog post replies
 
-				for(var e = 0; e < index.replies.length; e++) {
-					var endex = index.replies[e];
+				for(let e = 0; e < index.replies.length; e++) {
+					let endex = index.replies[e];
 
 
 					//{ create blog post reply cont
 
-						var replyElement = document.createElement("div");
-
-						replyElement.classList.add("reply");
+						let replyElement = $create(`<div class = "reply"></div>`);
 
 						postElement.appendChild(replyElement);
 
@@ -240,34 +195,24 @@ function setup() {
 
 					//{ create blog post reply edit button
 
-						var editReplyElement = document.createElement("button");
-
-						editReplyElement.dataset.index = i;
-						editReplyElement.dataset.endex = e;
-						editReplyElement.dataset.postCreated = index.created;
-						editReplyElement.dataset.replyCreated = endex.created;
+						let editReplyElement = $create(`<button data-index = "${i}" data-endex = "${e}" data-postCreated = "${index.created}" data-replyCreated = "${endex.created}">Edit</button>`)
 
 						editReplyElement.addEventListener("click", function() {
-							var d = this.dataset;
+							let d = this.dataset;
 							
-							var post = document.getElementsByClassName("post")[document.getElementsByClassName("post").length - 1 - d.index];
+							let post = document.getElementsByClassName("post")[document.getElementsByClassName("post").length - 1 - d.index];
 
-							var reply = post.getElementsByClassName("reply")[this.dataset.endex];
+							let reply = post.getElementsByClassName("reply")[this.dataset.endex];
 
 
 							//{ create blog post reply edit form
-								var replyEditForm = document.createElement("form");
-
-								replyEditForm.classList.add("reply");
-
-								replyEditForm.setAttribute("method", "POST");
-								replyEditForm.setAttribute("action", "/blog");
+								let replyEditForm = $create(`<form method = "POST" action = "/blog" enctype = "multipart/form-data" class = "reply"></form>`);
 							//}
 
 
 							//{ create blog post reply edit name
 
-								var replyEditNameElement = reply.getElementsByTagName("h2")[0].cloneNode(true);
+								let replyEditNameElement = reply.getElementsByTagName("h2")[0].cloneNode(true);
 
 								replyEditForm.appendChild(replyEditNameElement);
 
@@ -276,7 +221,7 @@ function setup() {
 
 							//{ create blog post reply edit name
 
-								var replyEditDateElement = reply.getElementsByTagName("h4")[0].cloneNode(true);
+								let replyEditDateElement = reply.getElementsByTagName("h4")[0].cloneNode(true);
 
 								replyEditForm.appendChild(replyEditDateElement);
 
@@ -285,11 +230,7 @@ function setup() {
 
 							//{ create blog post reply edit target hidden input
 
-								var replyEditTargetElement = document.createElement("input");
-
-								replyEditTargetElement.type = "hidden";
-								replyEditTargetElement.name = "target";
-								replyEditTargetElement.value = "edit-reply";
+								let replyEditTargetElement = $create(`<input type = "hidden" name = "target" value = "edit-reply"></input>`);
 
 								replyEditForm.appendChild(replyEditTargetElement);
 
@@ -298,11 +239,7 @@ function setup() {
 
 							//{ create blog post reply edit postID hidden input
 
-								var replyEditPostIDElement = document.createElement("input");
-
-								replyEditPostIDElement.type = "hidden";
-								replyEditPostIDElement.name = "postCreated";
-								replyEditPostIDElement.value = d.postCreated;
+								let replyEditPostIDElement = $create(`<input type = "hidden" name = "postCreated" value = "${d.postCreated}"></input>`);
 
 								replyEditForm.appendChild(replyEditPostIDElement);
 
@@ -311,11 +248,7 @@ function setup() {
 
 							//{ create blog post reply edit postID hidden input
 
-								var replyEditReplyIDElement = document.createElement("input");
-
-								replyEditReplyIDElement.type = "hidden";
-								replyEditReplyIDElement.name = "replyCreated";
-								replyEditReplyIDElement.value = d.replyCreated;
+								let replyEditReplyIDElement = $create(`<input type = "hidden" name = "replyCreated" value = "${d.replyCreated}"></input>`);
 
 								replyEditForm.appendChild(replyEditReplyIDElement);
 
@@ -324,16 +257,15 @@ function setup() {
 					
 							//{ create blog post reply edit textarea 
 
-								var replyEditContentElement = document.createElement("textarea");
+								let replyEditContentElement = $create(`<textarea name = "content"></textarea>`);
 
-								replyEditContentElement.setAttribute("name", "content");
 								replyEditContentElement.value = reply.getElementsByTagName("div")[0].textContent;
 
 								replyEditContentElement.addEventListener("keydown", function(e) {
 									if(e.keyCode === 9) {
 										e.preventDefault();
-										var start = this.selectionStart;
-										var end = this.selectionEnd;
+										let start = this.selectionStart;
+										let end = this.selectionEnd;
 
 										// set textarea value to: text before caret + tab + text after caret
 										this.value = this.value.substring(0, start) +
@@ -352,10 +284,7 @@ function setup() {
 					
 							//{ create blog post reply edit submit
 
-								var replyEditSubmitElement = document.createElement("button");
-
-								replyEditSubmitElement.setAttribute("type", "submit");
-								replyEditSubmitElement.textContent = "Save";
+								let replyEditSubmitElement = $create(`<button type = "submit">Save</button>`);
 
 								replyEditForm.appendChild(replyEditSubmitElement);
 
@@ -365,8 +294,6 @@ function setup() {
 							reply.replaceWith(replyEditForm);
 						});
 
-						editReplyElement.textContent = "Edit";
-
 						replyElement.appendChild(editReplyElement);
 
 					//}
@@ -374,13 +301,10 @@ function setup() {
 
 					//{ create blog post reply delete button
 
-						var deleteReplyElement = document.createElement("button");
-
-						deleteReplyElement.dataset.postCreated = index.created;
-						deleteReplyElement.dataset.replyCreated = endex.created;
+						let deleteReplyElement = $create(`<button data-postCreated = "${index.created}" data-replyCreated = "${endex.created}">Delete</button>`);
 
 						deleteReplyElement.addEventListener("click", function() {
-							var d = this.dataset;
+							let d = this.dataset;
 
 							fetch("/blog", {
 								method : "POST",
@@ -403,8 +327,6 @@ function setup() {
 							setup();
 						});
 
-						deleteReplyElement.textContent = "Delete";
-
 						replyElement.appendChild(deleteReplyElement);
 
 					//}
@@ -412,12 +334,10 @@ function setup() {
 
 					//{ create blog post reply ban button
 
-						var banElement = document.createElement("button");
-
-						banElement.dataset.name = endex.name;
+						let banElement = $create(`<button data-name = "${endex.name}">Ban</button>`);
 
 						banElement.addEventListener("click", function() {
-							var d = this.dataset;
+							let d = this.dataset;
 
 							fetch("/api/ban-account", {
 								method : "POST",
@@ -438,8 +358,6 @@ function setup() {
 							setup();
 						});
 
-						banElement.textContent = "Ban";
-
 						replyElement.appendChild(banElement);
 
 					//}
@@ -447,9 +365,7 @@ function setup() {
 
 					//{ create blog post reply user name
 
-						var nameElement = document.createElement("h2");
-
-						nameElement.textContent = endex.name;
+						let nameElement = $create(`<h2>${endex.name}</h2>`);
 
 						replyElement.appendChild(nameElement);
 
@@ -458,9 +374,7 @@ function setup() {
 
 					//{ create blog post reply date
 
-						var replyDateElement = document.createElement("h4");
-
-						replyDateElement.textContent = endex.created;
+						let replyDateElement = $create(`<h4>${endex.created}</h4>`);
 
 						replyElement.appendChild(replyDateElement);
 
@@ -469,9 +383,7 @@ function setup() {
 
 					//{ create blog post reply content
 
-						var replyContentElement = document.createElement("div");
-
-						replyContentElement.textContent = endex.content;
+						let replyContentElement = $create(`<div>${endex.content}</div>`);
 
 						replyElement.appendChild(replyContentElement);
 
@@ -484,56 +396,25 @@ function setup() {
 
 			//{ create reply form
 
-				var replyForm = document.createElement("form");
-
-				replyForm.classList.add("reply-form");
-
-				replyForm.setAttribute("method", "POST");
-				replyForm.setAttribute("action", "/blog");
+				let replyForm = $create(`<form method = "POST" action = "/blog" enctype = "multipart/form-data" class = "reply-form">
+					<input type = "hidden" name = "target" value = "create-reply">
+					<input type = "hidden" name = "postCreated" value = "${index.created}">
+				</form>`);
 
 				postElement.appendChild(replyForm);
 
 			//}
 
 
-			//{ create reply target hidden input
-
-				var replyTargetElement = document.createElement("input");
-
-				replyTargetElement.type = "hidden";
-				replyTargetElement.name = "target";
-				replyTargetElement.value = "create-reply";
-
-				replyForm.appendChild(replyTargetElement);
-
-			//}
-
-
-			//{ create reply postId hidden input
-
-				var replyPostIDElement = document.createElement("input");
-
-				replyPostIDElement.type = "hidden";
-				replyPostIDElement.name = "postCreated";
-				replyPostIDElement.value = index.created;
-
-				replyForm.appendChild(replyPostIDElement);
-
-			//}
-
-
-
 			//{ create reply textarea
 
-				var replyTextarea = document.createElement("textarea");
-
-				replyTextarea.setAttribute("name", "content");
+				let replyTextarea = $create(`<textarea name = "content"></textarea>`);
 
 				replyTextarea.addEventListener("keydown", function(e) {
 					if(e.keyCode === 9) {
 						e.preventDefault();
-						var start = this.selectionStart;
-						var end = this.selectionEnd;
+						let start = this.selectionStart;
+						let end = this.selectionEnd;
 
 						// set textarea value to: text before caret + tab + text after caret
 						this.value = this.value.substring(0, start) +
@@ -552,10 +433,7 @@ function setup() {
 
 			//{ create reply submit
 
-				var replySubmit = document.createElement("button");
-
-				replySubmit.setAttribute("type", "submit");
-				replySubmit.textContent = "Send";
+				let replySubmit = $create(`<button type = "submit">Send<button>`);
 
 				replyForm.appendChild(replySubmit);
 
@@ -564,8 +442,8 @@ function setup() {
 
 			//{ create blog nav topics 
 
-				for(var e = 0; e < index.topics.length; e++) {
-					var endex = index.topics[e];
+				for(let e = 0; e < index.topics.length; e++) {
+					let endex = index.topics[e];
 
 					//{ create/find topic folder
 
@@ -573,11 +451,9 @@ function setup() {
 
 							//{ create blog nav topic folder contentElement
 
-								var topicFolderElement = document.createElement("div");
-
-								topicFolderElement.innerHTML = `<h3 class = "folder-title">${endex}</h3>`;
-
-								topicFolderElement.classList.add("topics-drop-down");
+								let topicFolderElement = $create(`<div class = "topics-drop-down">
+									<h3 class = "folder-title">${endex}</h3>
+								</div>`);
 
 								blogNav.appendChild(topicFolderElement);
 
@@ -594,19 +470,13 @@ function setup() {
 
 					//{ append post to appropriate folder
 
-						var navTitleElement = document.createElement("div");
-
-						navTitleElement.classList.add("post-link");
-
-						navTitleElement.textContent = index.title;
-
-						navTitleElement.dataset.index = i;
+						let navTitleElement = $create(`<div class = "post-link" data-index = "${i}">${index.title}</div>`);
 
 						navTitleElement.addEventListener("click", function() {
-							var posts = document.getElementsByClassName("post");
-							var index = this.dataset.index;
-							var trueIndex = posts.length - index - 1;
-							var truePost = posts[trueIndex];
+							let posts = document.getElementsByClassName("post");
+							let index = this.dataset.index;
+							let trueIndex = posts.length - index - 1;
+							let truePost = posts[trueIndex];
 							
 							truePost.scrollIntoView({
 								behavior : "smooth"
@@ -625,10 +495,12 @@ function setup() {
 
 		//{ create blog post form
 
-			var createPostForm = document.createElement("form");
-
-			createPostForm.setAttribute("method", "POST");
-			createPostForm.setAttribute("action", "/blog");
+			let createPostForm = $create(`<form method = "POST" action = "/blog" enctype = "multipart/form-data" class = "reply-form">
+				<input type = "hidden" name = "target" value = "create-post">
+				<button class = "submit-post">Post</button>
+				<input type = "text" name = "title" placeholder = "Title">
+				<input type = "text" name = "topics" placeholder = "Topics (seperate with a comma)">
+			</form>`);
 
 			createPostForm.classList.add("create-post");
 
@@ -637,69 +509,15 @@ function setup() {
 		//}
 
 
-		//{ create blog post target hidden input
-
-			var createPostTargetElement = document.createElement("input");
-
-			createPostTargetElement.type = "hidden";
-			createPostTargetElement.name = "target";
-			createPostTargetElement.value = "create-post";
-
-			createPostForm.appendChild(createPostTargetElement);
-
-		//} 
-
-
-		//{ create blog post submit button
-
-			var createPostSubmitElement = document.createElement("button");
-
-			createPostSubmitElement.textContent = "Post";
-
-			createPostSubmitElement.classList.add("submit-post")
-
-			createPostForm.appendChild(createPostSubmitElement);
-
-		//} 
-
-
-		//{ create blog post title
-
-			var createPostTitleElement = document.createElement("input");
-
-			createPostTitleElement.type = "text";
-			createPostTitleElement.name = "title";
-			createPostTitleElement.placeholder = "Title";
-
-			createPostForm.appendChild(createPostTitleElement);
-
-		//} 
-
-
-		//{ create blog post topics
-
-			var createPostTopicsElement = document.createElement("input");
-
-			createPostTopicsElement.type = "text";
-			createPostTopicsElement.name = "topics";
-			createPostTopicsElement.placeholder = "Topics (seperate with a comma)";
-
-			createPostForm.appendChild(createPostTopicsElement);
-
-		//} 
-
-
 		//{ create blog post content
 
-			var createPostContentElement = document.createElement("textarea");
-
-			createPostContentElement.name = "content";
+			let createPostContentElement = $create(`<textarea name = "content"></textarea>`);
 
 			createPostContentElement.addEventListener("keydown", function(e) {
 				if(e.keyCode === 9) {
 					e.preventDefault();
-					var start = this.selectionStart;
-					var end = this.selectionEnd;
+					let start = this.selectionStart;
+					let end = this.selectionEnd;
 
 					// set textarea value to: text before caret + tab + text after caret
 					this.value = this.value.substring(0, start) +

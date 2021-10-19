@@ -220,7 +220,7 @@ function setup() {
 
 						//{ create blog post reply edit form
 
-							let replyEditForm = $create(`<form method = "POST" action = "/story-post">
+							let replyEditForm = $create(`<form method = "POST" action = "/story-post" enctype = "multipart/form-data">
 									<input type = "hidden" name = "target" value = "write-edit">
 									<input type = "hidden" name = "postCreated" value = "${data.created}">
 									<input type = "hidden" name = "replyCreated" value = "${d.created}">
@@ -291,7 +291,7 @@ function setup() {
 
 		//{ create reply form
 
-			let replyForm = $create(`<form class = "reply-form" method = "POST" action = "/story-post">
+			let replyForm = $create(`<form class = "reply-form" method = "POST" action = "/story-post" enctype = "multipart/form-data">
 					<input type = "hidden" name = "target" value = "write-post">
 					<input type = "hidden" name = "storyCreated" value = "${data.created}">
 					<input type = "hidden" name = "title" value = "${write}">

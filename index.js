@@ -14,7 +14,7 @@ const createHTML = require("./utils/createHTML.js");
 
 dotenv.config();
 
-const domainName = "https://localhost:3030";
+global.domainName = "http://localhost:3030";
 const dbPass = process.env["db_pass"];
 
 
@@ -59,7 +59,7 @@ const loggedIn = (req, res, next) => {
     }
 
     next();
-}
+};
 
 
 /* create middleware */
@@ -74,17 +74,18 @@ app.use(loggedIn);
 
 /* create functions for later use */
 
-const DB = new Promise((resolve, reject) => {
+var DB,
+    DBResolve = new Promise((resolve, reject) => {
     MongoClient.connect(`mongodb+srv://Stranothus:${dbPass}@cluster0.u2xxq.mongodb.net/users?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }, function(err, db) {
-        let dbo = db.db("users");
-        dbo.collection("accounts").findOne({ "emails" : email }, async function(err, result) {
-            if(err) console.error(err);
-
-            resolve(result);
-        });
+        DB = {
+            db: db,
+            users: db.db("users"),
+            writing: db.db("writing")
+        };
+        resolve(DB);
     });
 });
 
@@ -100,7 +101,7 @@ const DB = new Promise((resolve, reject) => {
 */
 
 const userInfo = (email, callback) =>  {
-    DB.db("users").collection("accounts").findOne({ "emails" : email }, (err, result) => {
+    DB.users.collection("accounts").findOne({ "emails" : email }, (err, result) => {
         if(err) console.error(err);
 
         callback(result);
@@ -293,7 +294,7 @@ app.post("/api/create-story", (req, res) => {
                 "replies" : []
             };
 
-            DB.db("writing").collection("stories").insertOne(obj, function(err, result) {
+            DB.writing.collection("stories").insertOne(obj, function(err, result) {
                 if(err) console.error(err);
 
                 log("POST", "New story created");
@@ -321,7 +322,7 @@ app.post("/api/edit-story", (req, res) => {
 
     if(req.loggedIn && body.created && body.title && body.story) {
         if(req.loggedIn.perms === "admin") {
-            let dbo = db.db("writing");
+            let dbo = db.writing;
             let obj = {
                 image : "/images/" + image.filename,
                 title : body.title,
@@ -330,7 +331,7 @@ app.post("/api/edit-story", (req, res) => {
                 replies : []
             };
 
-            DB.db("writing").collection("stories").updateOne({ "created" : body.created }, { "$set" : obj }, function(err, result) {
+            DB.writing.collection("stories").updateOne({ "created" : body.created }, { "$set" : obj }, function(err, result) {
                 if(err) console.error(err);
 
                 log("PUT", "Story edited");
@@ -357,7 +358,7 @@ app.post("/api/delete-story", (req, res) => {
 
     if(req.loggedIn && body.created) {
         if(req.loggedIn.perms === "admin") {
-            DB.db("writing").collection("stories").deleteOne({ "created" : body.created }, function(err, result) {
+            DB.writing.collection("stories").deleteOne({ "created" : body.created }, function(err, result) {
                 if(err) console.error(err);
 
                 log("DELETE", "Story deleted");
@@ -382,7 +383,7 @@ app.post("/api/delete-story", (req, res) => {
 app.get("/api/short-story/:title", (req, res) => {
 	var params = req.params;
 
-    DB.db("writing").collection("stories").findOne({ "title" : params.title }, function(err, result) {
+    DB.writing.collection("stories").findOne({ "title" : params.title }, function(err, result) {
         if(err) console.error(err);
 
         res.json(result);
@@ -405,7 +406,7 @@ app.post("/api/create-write", (req, res) => {
                 "replies" : []
             };
 
-            DB.db("writing").collection("quick writes").insertOne(obj, function(err, result) {
+            DB.writing.collection("quick writes").insertOne(obj, function(err, result) {
                 if(err) console.error(err);
 
                 log("POST", "Quick write creation");
@@ -441,7 +442,7 @@ app.post("/api/edit-write", (req, res) => {
                 replies : []
             };
 
-            DB.db("writing").collection("quick writes").updateOne({ "created" : body.created }, { "$set" : obj }, function(err, result) {
+            DB.writing.collection("quick writes").updateOne({ "created" : body.created }, { "$set" : obj }, function(err, result) {
                 if(err) console.error(err);
 
                 log("PUT", "Quick write edited");
@@ -468,7 +469,7 @@ app.post("/api/delete-write", (req, res) => {
 
     if(req.loggedIn && body.created) {
         if(req.loggedIn.perms === "admin") {
-            DB.db("writing").collection("quick writes").deleteOne({ "created" : body.created }, function(err, result) {
+            DB.writing.collection("quick writes").deleteOne({ "created" : body.created }, function(err, result) {
                 if(err) console.error(err);
 
                 log("DELETE", "Quick write deleted");
@@ -493,7 +494,7 @@ app.post("/api/delete-write", (req, res) => {
 app.get("/api/quick-write/:title", (req, res) => {
 	var params = req.params;
 
-    DB.db("writing").collection("quick writes").findOne({ "title" : params.title }, function(err, result) {
+    DB.writing.collection("quick writes").findOne({ "title" : params.title }, function(err, result) {
         if(err) console.error(err);
 
         res.json(result);
@@ -514,7 +515,7 @@ app.post("/story-post", (req, res) => {
                         "content" : body.content
                     };
 
-                    DB.db("writing").collection("quick writes").updateOne({ "created" : body.created }, { "$push" : { "replies" : postObj }}, function(err, result) {
+                    DB.writing.collection("quick writes").updateOne({ "created" : body.created }, { "$push" : { "replies" : postObj }}, function(err, result) {
                         if(err) console.error(err);
 
                         log("POST", "Quick write reply posted");
@@ -555,7 +556,7 @@ app.post("/story-post", (req, res) => {
                         };
                     }
 
-                    DB.db("writing").collection("quick writes").updateOne({ "created" : body.postCreated, "replies" : { "$elemMatch" : match }}, { "$set" : postObj }, function(err, result) {
+                    DB.writing.collection("quick writes").updateOne({ "created" : body.postCreated, "replies" : { "$elemMatch" : match }}, { "$set" : postObj }, function(err, result) {
                         if(err) console.error(err);
                         
                         log("PUT", "Quick write reply edit");
@@ -591,7 +592,7 @@ app.post("/story-post", (req, res) => {
                         };
                     }
 
-                    DB.db("writing").collection("quick writes").updateOne({ "created" : body.postCreated }, { "$pull" : { "replies" : match }}, function(err, result) {
+                    DB.writing.collection("quick writes").updateOne({ "created" : body.postCreated }, { "$pull" : { "replies" : match }}, function(err, result) {
                         if(err) console.error(err);
                         
                         log("DELETE", "Quick write reply deleted");
@@ -620,7 +621,7 @@ app.post("/story-post", (req, res) => {
                         "content" : body.content
                     };
 
-                    DB.db("writing").collection("stories").updateOne({ "created" : body.created }, { "$push" : { "replies" : postObj }}, function(err, result) {
+                    DB.writing.collection("stories").updateOne({ "created" : body.created }, { "$push" : { "replies" : postObj }}, function(err, result) {
                         if(err) console.error(err);
 
                         log("POST", "Story reply posted");
@@ -661,7 +662,7 @@ app.post("/story-post", (req, res) => {
                         };
                     }
 
-                    DB.db("writing").collection("stories").updateOne({ "created" : body.postCreated, "replies" : { "$elemMatch" : match }}, { "$set" : postObj }, function(err, result) {
+                    DB.writing.collection("stories").updateOne({ "created" : body.postCreated, "replies" : { "$elemMatch" : match }}, { "$set" : postObj }, function(err, result) {
                         if(err) console.error(err);
 
                         log("PUT", "Story reply edit");
@@ -697,7 +698,7 @@ app.post("/story-post", (req, res) => {
                         };
                     }
 
-                    DB.db("writing").collection("stories").updateOne({ "created" : body.postCreated }, { "$pull" : { "replies" : match }}, function(err, result) {
+                    DB.writing.collection("stories").updateOne({ "created" : body.postCreated }, { "$pull" : { "replies" : match }}, function(err, result) {
                         if(err) console.error(err);
 
                         log("DELETE", "Story reply deleted");
@@ -726,7 +727,7 @@ app.post("/story-post", (req, res) => {
 app.get("/api/confirmation-email", (req, res) => {
     if(req.loggedIn) {
         if(!req.loggedIn.confirmed) {
-            DB.db("users").collection("accounts").findOne({ "email" : req.loggedIn.email }, function(err, result) {
+            DB.users.collection("accounts").findOne({ "email" : req.loggedIn.email }, function(err, result) {
                 if(err) console.error(err);
 
                 let token = jwt.sign(result, process.env.VERIFICATION_SECRET);
@@ -765,7 +766,7 @@ app.post("/api/login", (req, res) => {
 	var body = req.body;
 
     if(body.email && body.password) {
-        DB.db("users").collection("accounts").findOne({ "email" : body.email }, async function(err, result) {
+        DB.users.collection("accounts").findOne({ "email" : body.email }, async function(err, result) {
             if(err) console.error(err);
             
             if(checkHash(body.password, result.hash)) {
@@ -791,7 +792,7 @@ app.post("/api/create-account", (req, res) => {
 	var body = req.body;
 
 	if(body.name && body.password && body.email) {
-        DB.db("users").collection("accounts").find({ "emails" : body.email }).toArray(async function(err, results) {
+        DB.users.collection("accounts").find({ "emails" : body.email }).toArray(async function(err, results) {
             if(err) console.error(err);
 
             if(!results.length) {
@@ -808,7 +809,7 @@ app.post("/api/create-account", (req, res) => {
                     "confirmed" : false
                 };
 
-                DB.db("users").collection("accounts").insertOne(userObj, function(err, result) {
+                DB.users.collection("accounts").insertOne(userObj, function(err, result) {
                     if (err) console.error(err);
 
                     log("POST", "New account created for " + body.email);
@@ -836,13 +837,13 @@ app.post("/api/ban-account", (req, res) => {
     if(req.loggedIn && body.name) {
         if(req.loggedIn.perms === "admin") {
             // user permissions become banned
-            DB.db("users").collection("accounts").updateOne({ "name" : body.name }, { "perms" : "banned" }, () => db.close);
+            DB.users.collection("accounts").updateOne({ "name" : body.name }, { "perms" : "banned" }, () => {});
             // blog replies are deleted
-            DB.db("writing").collection("blog").updateMany({ }, { "$pull" : { "replies" : { "name" : body.name }}}, () => db.close);
+            DB.writing.collection("blog").updateMany({ }, { "$pull" : { "replies" : { "name" : body.name }}}, () => {});
             // story replies are deleted
-            DB.db("writing").collection("stories").updateMany({ }, { "$pull" : { "replies" : { "name" : body.name }}}, () => db.close);
+            DB.writing.collection("stories").updateMany({ }, { "$pull" : { "replies" : { "name" : body.name }}}, () => {});
             // quick write replies are deleted
-            DB.db("writing").collection("quick writes").updateMany({ }, { "$pull" : { "replies" : { "name" : body.name }}}, () => db.close);
+            DB.writing.collection("quick writes").updateMany({ }, { "$pull" : { "replies" : { "name" : body.name }}}, () => {});
 
             log("POST", "Account " + body.name + " banned");
 
@@ -878,7 +879,7 @@ app.get("/confirm-password", (req, res) => {
 			</head>
 			<body>
 				<h1>Did you create a BananaBlog account for ${token.email}?</h1>
-				<form method = "POST" action = "/api/confirm-password">
+				<form method = "POST" action = "/api/confirm-password" enctype = "multipart/form-data">
 					<input type = "hidden" name = "answer" value = "is me">
 					<button>Yes, I created an account</button>
 				</form>
@@ -897,7 +898,7 @@ app.post("/api/confirm-password", (req, res) => {
 	
     if(token && body.answer) {
         if(body.answer === "is not me") {
-            DB.db("users").collection("accounts").deleteOne({ "email" : token.email }, function(err, result) {
+            DB.users.collection("accounts").deleteOne({ "email" : token.email }, function(err, result) {
                 if(err) console.error(err);
 
                 log("POST", "Account denied " + token.email);
@@ -906,7 +907,7 @@ app.post("/api/confirm-password", (req, res) => {
                 res.status(200).redirect("/home");
             });
         } else {
-            DB.db("users").collection("accounts").updateOne({ "email" : token.email }, { "$set" : { "confirmed" : true }}, function(err, result) {
+            DB.users.collection("accounts").updateOne({ "email" : token.email }, { "$set" : { "confirmed" : true }}, function(err, result) {
                 if(err) console.error(err);
 
                 log("POST", "Account confirmed " + token.email);
@@ -927,7 +928,7 @@ app.post("/api/forgot-password", (req, res) => {
 
     if(body.email) {
         // find account associated with email
-        DB.db("users").collection("accounts").findOne({ "email" : body.email }, function(err, result) {
+        DB.users.collection("accounts").findOne({ "email" : body.email }, function(err, result) {
             if(err) console.error(err);
 
             // create a VERIFICATION_SECRET jwt for the account
@@ -973,7 +974,7 @@ app.get("/reset-password-email", (req, res) => {
 				<link href="/styles/login.css" rel="stylesheet" type="text/css" />
 			</head>
 			<body>
-				<form method = "POST" action = "/api/reset-password" id = "login">
+				<form method = "POST" action = "/api/reset-password" id = "login" enctype = "multipart/form-data">
 					<h1>New password</h1>
 					<input type = "password" name = "password" placeholder = "New password">
 					<input type = "submit" value = "Set password">
@@ -991,7 +992,7 @@ app.post("/api/reset-password", async (req, res) => {
         let salt = await genSalt(Math.floor(Math.random() * 10));
         let hash = await genHash(body.password, salt);
 
-        DB.db("users").collection("accounts").updateOne({ "email" : token.email }, { "hash" : hash }, function(err, result) {
+        DB.users.collection("accounts").updateOne({ "email" : token.email }, { "hash" : hash }, function(err, result) {
             if(err) console.error(err);
 
             log("POST", "Password reset for " + body.email);
@@ -1010,14 +1011,14 @@ app.post("/api/new-password", (req, res) => {
     let body = req.body;
 
     if(body.password && body.newPassword && body.email) {
-        DB.db("users").collection("accounts").findOne({ "email" : body.email }, async function(err, result) {
+        DB.users.collection("accounts").findOne({ "email" : body.email }, async function(err, result) {
             if(err) console.error(err);
 
             if(await checkHash(body.password, result.hash)) {
                 let salt = await genSalt(Math.floor(Math.random() * 10));
                 let hash = await genHash(body.newPassword, salt);
 
-                DB.db("users").collection("accounts").updateOne({ "email" : body.email }, { "$set" : { "hash" : hash }}, function(err, result) {
+                DB.users.collection("accounts").updateOne({ "email" : body.email }, { "$set" : { "hash" : hash }}, function(err, result) {
                     if(err) console.error(err);
 
                     log("POST", "New password for " + body.email);
@@ -1069,7 +1070,7 @@ app.post("/blog", (req, res) => {
                         "replies" : []
                     };
 
-                    DB.db("writing").collection("blog").insertOne(postObj, function(err, result) {
+                    DB.writing.collection("blog").insertOne(postObj, function(err, result) {
                         if(err) console.error(err);
 
                         log("POST", "New blog post created");
@@ -1099,7 +1100,7 @@ app.post("/blog", (req, res) => {
                         "topics" : body.topics.replace(/\s*,\s*/g, ",").split(","),
                     };
 
-                    DB.db("writing").collection("blog").updateOne({ "created" : body.created }, { "$set" : postObj }, function(err, result) {
+                    DB.writing.collection("blog").updateOne({ "created" : body.created }, { "$set" : postObj }, function(err, result) {
                         if(err) console.error(err);
 
                         log("PUT", "Blog post edited");
@@ -1123,7 +1124,7 @@ app.post("/blog", (req, res) => {
 		case "delete-post" :
             if(req.loggedIn && body.created) {
                 if(req.loggedIn.perms === "admin") {
-                    DB.db("writing").collection("blog").deleteOne({ "created" : body.created }, function(err, result) {
+                    DB.writing.collection("blog").deleteOne({ "created" : body.created }, function(err, result) {
                         if(err) console.error(err);
 
                         log("DELETE", "Blog post deleted");
@@ -1153,7 +1154,7 @@ app.post("/blog", (req, res) => {
                         "content" : body.content
                     };
 
-                    DB.db("writing").collection("blog").updateOne({ "created" : body.created }, { "$push" : { "replies" : postObj }}, function(err, result) {
+                    DB.writing.collection("blog").updateOne({ "created" : body.created }, { "$push" : { "replies" : postObj }}, function(err, result) {
                         if(err) console.error(err);
 
                         log("POST", "Blog post reply created");
@@ -1195,7 +1196,7 @@ app.post("/blog", (req, res) => {
                         };
                     }
 
-                    DB.db("writing").collection("blog").updateOne({ "created" : body.postCreated, "replies" : { "$elemMatch" : match }}, { "$set" : postObj }, function(err, result) {
+                    DB.writing.collection("blog").updateOne({ "created" : body.postCreated, "replies" : { "$elemMatch" : match }}, { "$set" : postObj }, function(err, result) {
                         if(err) console.error(err);
 
                         log("PUT", "Blog post reply edited");
@@ -1232,7 +1233,7 @@ app.post("/blog", (req, res) => {
                         };
                     }
 
-                    DB.db("writing").collection("blog").updateOne({ "created" : body.postCreated }, { "$pull" : { "replies" : match }}, function(err, result) {
+                    DB.writing.collection("blog").updateOne({ "created" : body.postCreated }, { "$pull" : { "replies" : match }}, function(err, result) {
                         if(err) console.error(err);
 
                         log("DELETE", "Blog post reply deleted");
@@ -1264,7 +1265,7 @@ app.post("/api/mail-list", (req, res) => {
 
     if(req.loggedIn && body.title && body.content) {
         if(req.loggedIn.perms === "admin") {
-            DB.db("users").collection("accounts").find({ "mail list" : true }, { "email" : 1, "_id" : 0 }).toArray(function(err, results) {
+            DB.users.collection("accounts").find({ "mail list" : true }, { "email" : 1, "_id" : 0 }).toArray(function(err, results) {
                 if(err) console.error(err);
 
                 let mailOptions = {
@@ -1317,7 +1318,7 @@ app.post("/api/mail-list", (req, res) => {
 
 app.post("/api/mail-list-subscribe", (req, res) => {
     if(req.loggedIn) {
-        DB.db("users").collection("accounts").updateOne({ "email" : req.loggedIn.email }, { "$set" : { "mail list" : true }}, function(err, result) {
+        DB.users.collection("accounts").updateOne({ "email" : req.loggedIn.email }, { "$set" : { "mail list" : true }}, function(err, result) {
             if(err) console.error(err);
 
             log("POST", "Email list added for " + req.loggedIn.email);
@@ -1337,7 +1338,7 @@ app.post("/api/mail-list-subscribe", (req, res) => {
 
 app.post("/api/mail-list-unsubscribe", (req, res) => {
     if(req.loggedIn) {
-        DB.db("users").collection("accounts").updateOne({ "email" : req.loggedIn.email }, { "$set" : { "mail list" : false }}, function(err, result) {
+        DB.users.collection("accounts").updateOne({ "email" : req.loggedIn.email }, { "$set" : { "mail list" : false }}, function(err, result) {
             if(err) console.error(err);
 
             log("POST", "Email list removed for " + req.loggedIn.email);
@@ -1359,7 +1360,7 @@ app.post("/api/mail-list-unsubscribe", (req, res) => {
 
 
 app.get("/api/blog-posts", (req, res) => {
-    DB.db("writing").collection("blog").find({ }).toArray(function(err, results) {
+    DB.writing.collection("blog").find({ }).toArray(function(err, results) {
         if(err) console.error(err);
 
         res.json(results);
@@ -1368,7 +1369,7 @@ app.get("/api/blog-posts", (req, res) => {
 
 
 app.get("/api/stories", (req, res) => {
-    DB.db("writing").collection("stories").find({ }).toArray(function(err, results) {
+    DB.writing.collection("stories").find({ }).toArray(function(err, results) {
         if(err) console.error(err);
 
         res.json(results);
@@ -1377,7 +1378,7 @@ app.get("/api/stories", (req, res) => {
 
 
 app.get("/api/quick-writes", (req, res) => {
-    DB.db("writing").collection("quick writes").find({ }).toArray(function(err, results) {
+    DB.writing.collection("quick writes").find({ }).toArray(function(err, results) {
         if(err) console.error(err);
 
         res.json(results);

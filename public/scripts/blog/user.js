@@ -103,6 +103,7 @@ function setup() {
 
 										replyEditForm.setAttribute("method", "POST");
 										replyEditForm.setAttribute("action", "/blog");
+										replyEditForm.setAttribute("enctype", "multipart/form-data");
 
 										replyEditForm.addEventListener("submit", () => {
 											window.setTimeout(setup, 100);
@@ -302,6 +303,7 @@ function setup() {
 
 				replyForm.setAttribute("method", "POST");
 				replyForm.setAttribute("action", "/blog");
+				replyForm.setAttribute("enctype", "multipart/form-data");
 
 				postElement.appendChild(replyForm);
 
