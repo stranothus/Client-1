@@ -1394,7 +1394,7 @@ app.get("/api/user", (req, res) => {
 /* set up the port */
 
 
-app.listen(3030, () => {
+app.listen(process.env.PORT, () => {
     log("N/A", "Server restarted");
-	console.log("Listening on port 3030");
+	console.log("Listening on port " + process.env.PORT);
 });
